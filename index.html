@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+  </head>
+  <body>
+    <style>
+      .button_box {
+        position: fixed;
+        display: flex;
+        flex-direction: column;
+        top: 50%;
+        left: 50%;
+      }
+      .button_box button {
+        height: 48px;
+        border: 1px solid black;
+        margin-bottom: 20px;
+        cursor: pointer;
+      }
+    </style>
+    <div class="button_box">
+      <button class="t396__elem" data-elem-id="1622986986995">Кнопка 1</button>
+      <button class="t-btn" id="button2" data-buttonfieldset="button2">Кнопка 2</button>
+      <button class="button3">Кнопка 3</button>
+      <button class="t776__btn-wrapper t-btn_sm">Кнопка 4</button>
+      <button class="t776__btn-wrapper">Кнопка 5</button>
+    </div>
+    <!-- <script src="https://bot.jaicp.com/chatwidget/uEkMjVpG:8b07b27d33364b439329985b0220b3e49f9111f9/justwidget.js" async></script> -->
+    <script src='https://salebot.pro/js/salebot.js?v=1' charset='utf-8'></script>
+    <script>
+      SaleBotPro.init({
+        onlineChatId: '4859'
+      });
+    </script>
+    <script>
+      setTimeout(function() {
+        const apiKey = '788375de0dd3b5a8207a6f917991d5f4';
+        const campboxUserId = '763e331f-b605-41fd-b9e9-2f6d7efba714'
+        const recipientId = window.SaleBotPro.recipient_id;
+        const urlSaveVariables = `https://lesli-unpersonifying-tridimensionally.ngrok-free.dev/api/${apiKey}/save_variables`;
+        const urlFindClient = `https://chatter.salebot.pro/api/${apiKey}/online_chat_client_id?recipient=${recipientId}`;
+        console.log('Recipient ID:', recipientId);
+        let clientId;
+
+        if (recipientId) {
+          fetch(urlFindClient, {
+            method: 'GET'
+          })
+          .then(res => res.json())
+          .then(json => {
+            console.log('FindClient response:', json);
+            if (json.length === 0) {
+              console.error('Клиент не найден');
+              return;
+            }
+            clientId = json.client_id ? json.client_id : null;
+            console.log('Client ID:', json.client_id ? json.client_id : null);
+            if (clientId) {
+              sendCampboxUserId(clientId);
+            }
+          })
+          .catch(e => console.error('Ошибка FindClient:', e));
+        }
+
+        function sendCampboxUserId(clientId) {
+          const dataSaveVariables = {
+            client_id: clientId,
+            variables: {
+              'client.campbox_user_id': campboxUserId,
+            }
+          };
+          fetch(urlSaveVariables, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(dataSaveVariables)
+          })
+          .then(response => {
+            console.log('Campbox user ID отправлен:', response);
+          })
+          .catch(error => {
+            console.error('Ошибка SaveVariables:', error);
+          });
+        }
+      }, 3000);
+    </script>
+  </body>
+</html>
